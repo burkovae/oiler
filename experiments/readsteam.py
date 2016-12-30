@@ -1,5 +1,9 @@
 import usb.core
 import usb.util
+import binascii
+
+def hexint(b):
+    return int(binascii.hexlify(b), 16)
 
 def main():
     device = usb.core.find(idVendor=0x1a86, idProduct=0x7523)
@@ -26,9 +30,11 @@ def main():
         #print "ASDF %d" % x
         try:
             #print "Trying hard..."
-            data = device.read(endpoint.bEndpointAddress, 0x4)
-                                  # endpoint.wMaxPacketSize)
+            data = device.read(endpoint.bEndpointAddress, 0x10)
+             #                      endpoint.wMaxPacketSize)
             print data
+            hx = binascii.hexlify(data)
+            print "%d mm?" % (int(hx[2:6], 16))
             #print "At %d getting %r" % (x, data)
 
             #RxData = ''.join([chr(x) for x in data])
